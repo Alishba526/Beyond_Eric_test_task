@@ -330,12 +330,12 @@ export const ProductHero = () => {
         </div>
 
         {/* Right Column: Image Carousel */}
-        <div className="relative h-[500px] w-full md:h-[600px]"> {/* Increased height */}
+        <div className="relative h-[400px] w-full md:h-[500px]"> {/* Increased height */}
           <Carousel
             className="w-full h-full" // Removed max-w-xs and mx-auto
             plugins={[
               Autoplay({
-                delay: 3000, // 3 seconds delay
+                delay: 6000, // 6 seconds delay
                 stopOnInteraction: false, // Continue autoplay even if user interacts
               }),
             ]}
