@@ -42,6 +42,10 @@ All colors MUST be HSL.
     --destructive: 0 72% 55%;
     --destructive-foreground: 0 0% 100%;
 
+    /* Success colors */
+    --success: 142 76% 36%; /* Example green for success */
+    --success-foreground: 0 0% 100%; /* White text for contrast */
+
     /* Border and input colors with subtle glass effect */
     --border: 220 20% 88%;
     --input: 220 20% 90%;
@@ -115,6 +119,10 @@ All colors MUST be HSL.
 
     --destructive: 0 72% 60%;
     --destructive-foreground: 0 0% 100%;
+
+    /* Success colors for dark theme */
+    --success: 142 76% 46%; /* Slightly lighter green for dark mode */
+    --success-foreground: 0 0% 100%;
 
     --border: 230 15% 22%;
     --input: 230 15% 20%;

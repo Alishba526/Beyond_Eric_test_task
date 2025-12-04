@@ -4,7 +4,7 @@ import { ProductGrid } from "@/components/products/ProductGrid";
 import { LoadingSpinner } from "@/components/products/LoadingSpinner";
 import { Header } from "@/components/layout/Header";
 import { Footer } from "@/components/layout/Footer";
-import { Helmet } from "react-helmet";
+import { Helmet } from "react-helmet-async";
 import { Sidebar } from "@/components/layout/Sidebar";
 import { FilterSection } from "@/components/products/FilterSection";
 import { CategoryFilter } from "@/components/products/CategoryFilter";

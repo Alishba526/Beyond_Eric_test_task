@@ -1,9 +1,9 @@
-import { Menu, ShoppingBag, ShoppingCart } from "lucide-react";
+import { Menu, ShoppingBag, ShoppingCart, Heart, Search } from "lucide-react";
 import { Link } from "react-router-dom";
 import { motion, useAnimation } from "framer-motion";
 import { useCartStore } from "@/store/cartStore";
+import { useFavoriteStore } from "@/store/favoriteStore";
 import { useEffect } from "react";
-import { SearchBar } from "../products/SearchBar";
 import { useSearchStore } from "@/store/searchStore";
 import {
   Sheet,
@@ -12,6 +12,8 @@ import {
 } from "@/components/ui/sheet";
 import { Button } from "@/components/ui/button";
 import { ThemeToggle } from "../ThemeToggle";
+import { SearchSheet } from "../products/SearchSheet";
+import { SearchBar } from "../products/SearchBar";
 
 /**
  * @component Header
@@ -19,7 +21,7 @@ import { ThemeToggle } from "../ThemeToggle";
  *              Features:
  *              - Animated appearance using Framer Motion.
  *              - Glassmorphism effect for a modern look.
- *              - Dynamic shopping cart count display.
+ *              - Dynamic shopping cart count display.script 
  *              - Theme toggle button for switching between light/dark modes.
  *              - Navigation links to Home, Products, About, and Contact pages.
  *              - Cart icon animation when items are added to the cart.
@@ -27,9 +29,11 @@ import { ThemeToggle } from "../ThemeToggle";
 export const Header = () => {
   const items = useCartStore((state) => state.items);
   const openCart = useCartStore((state) => state.openCart);
+  const favorites = useFavoriteStore((state) => state.favorites);
   // Get the animation trigger from the cart store
   const cartAnimationTrigger = useCartStore((state) => state.cartAnimationTrigger);
   const totalItems = items.reduce((total, item) => total + item.quantity, 0);
+  const totalFavorites = favorites.length;
   const { searchQuery, setSearchQuery } = useSearchStore();
 
   // Animation controls for the cart icon
@@ -70,7 +74,7 @@ export const Header = () => {
           </Link>
 
           {/* Navigation Links, Theme Toggle & Cart */}
-          <div className="flex items-center space-x-4 lg:space-x-8">
+          <div className="flex items-center space-x-2 lg:space-x-4">
             {/* Hamburger Menu for Mobile */}
             <Sheet>
               <SheetTrigger asChild>
@@ -104,12 +108,12 @@ export const Header = () => {
                   >
                     Contact
                   </Link>
-                  <div className="w-full">
-                    <SearchBar
-                      searchQuery={searchQuery}
-                      onSearchChange={setSearchQuery}
-                    />
-                  </div>
+                  <Link
+                    to="/favorites"
+                    className="text-foreground hover:text-primary transition-colors font-medium text-lg"
+                  >
+                    Favorites
+                  </Link>
                   <ThemeToggle />
                 </div>
               </SheetContent>
@@ -130,13 +134,6 @@ export const Header = () => {
               >
                 Products
               </Link>
-              {/* Search Bar */}
-              <div className="w-56">
-                <SearchBar
-                  searchQuery={searchQuery}
-                  onSearchChange={setSearchQuery}
-                />
-              </div>
               {/* About Us Page Link */}
               <Link
                 to="/about"
@@ -151,9 +148,36 @@ export const Header = () => {
               >
                 Contact
               </Link>
+              {/* Favorites Page Link */}
+              <Link
+                to="/favorites"
+                className="text-foreground hover:text-primary transition-colors font-medium"
+              >
+                Favorites
+              </Link>
               {/* Theme Toggle Button */}
               <ThemeToggle />
             </div>
+
+            <div className="hidden lg:block w-72">
+              <SearchBar
+                searchQuery={searchQuery}
+                onSearchChange={setSearchQuery}
+              />
+            </div>
+
+            {/* SearchSheet for mobile */}
+            <div className="lg:hidden">
+              <SearchSheet />
+            </div>
+
+            {/* Favorites Icon */}
+            <Link to="/favorites" className="relative group">
+              <Heart className="h-6 w-6 text-foreground group-hover:text-primary transition-colors" />
+              <span className="absolute -top-2 -right-2 bg-primary text-primary-foreground text-xs font-bold w-5 h-5 flex items-center justify-center rounded-full">
+                {totalFavorites}
+              </span>
+            </Link>
 
             {/* Cart Icon - Opens the shopping cart sidebar */}
             <motion.div // Make this motion.div to animate
@@ -173,4 +197,3 @@ export const Header = () => {
     </motion.header>
   );
 };
-

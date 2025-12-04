@@ -9,6 +9,8 @@ import {
 import { Button } from "@/components/ui/button";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Plus, Minus, Trash2 } from "lucide-react";
+import { useToast } from "@/components/ui/use-toast";
+import { useNavigate } from "react-router-dom"; // Import useNavigate
 
 export const CartSheet = () => {
   const {
@@ -18,12 +20,26 @@ export const CartSheet = () => {
     increaseQuantity,
     decreaseQuantity,
     removeFromCart,
+    clearCart,
   } = useCartStore();
+  const { toast } = useToast();
+  const navigate = useNavigate(); // Initialize useNavigate
 
   const total = items.reduce(
     (acc, item) => acc + item.price * item.quantity,
     0
   );
+
+  const handleCheckout = () => {
+    toast({
+      title: "Order Confirmed!",
+      description: "Your order has been placed successfully. Thank you!",
+      variant: "success",
+    });
+    clearCart();
+    closeCart();
+    navigate("/order-confirmation"); // Navigate to the order confirmation page
+  };
 
   return (
     <Sheet open={isCartOpen} onOpenChange={closeCart}>
@@ -96,7 +112,11 @@ export const CartSheet = () => {
                   <span>Subtotal</span>
                   <span>${total.toFixed(2)}</span>
                 </div>
-                <Button className="w-full bg-primary hover:bg-primary/90" size="lg">
+                <Button
+                  className="w-full bg-primary hover:bg-primary/90"
+                  size="lg"
+                  onClick={handleCheckout} // Add onClick handler here
+                >
                   Proceed to Checkout
                 </Button>
               </div>

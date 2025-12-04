@@ -1,10 +1,11 @@
 import { Product } from "@/types/product";
 import { Card, CardContent, CardFooter } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { Star, ShoppingCart, Eye } from "lucide-react";
+import { Star, ShoppingCart, Eye, Heart } from "lucide-react";
 import { Link } from "react-router-dom";
 import { motion } from "framer-motion";
 import { useCartStore } from "@/store/cartStore";
+import { useFavoriteStore } from "@/store/favoriteStore";
 import { toast } from "sonner";
 
 /**
@@ -40,6 +41,8 @@ interface ProductCardProps {
 export const ProductCard = ({ product, index = 0 }: ProductCardProps) => {
   const addToCart = useCartStore((state) => state.addToCart);
   const openCart = useCartStore((state) => state.openCart); // Get openCart from store
+  const { addToFavorites, removeFromFavorites, isFavorite } = useFavoriteStore();
+  const isProductFavorite = isFavorite(product.id);
 
   /**
    * Animation variants for card entrance
@@ -78,6 +81,16 @@ export const ProductCard = ({ product, index = 0 }: ProductCardProps) => {
     openCart(); // Open the cart after adding an item
     toast.success(`Added "${product.title}" to cart!`);
   }
+
+  const handleToggleFavorite = () => {
+    if (isProductFavorite) {
+      removeFromFavorites(product.id);
+      toast.error(`Removed "${product.title}" from favorites!`);
+    } else {
+      addToFavorites(product);
+      toast.success(`Added "${product.title}" to favorites!`);
+    }
+  };
 
   return (
     <motion.div
@@ -211,7 +224,27 @@ export const ProductCard = ({ product, index = 0 }: ProductCardProps) => {
                   whileHover={{ scale: 1.2 }}
                   transition={{ duration: 0.2 }}
                 >
-                  <ShoppingCart className="h-4 w-4" />
+.                 <ShoppingCart className="h-4 w-4" />
+                </motion.div>
+              </Button>
+            </motion.div>
+            
+            {/* Favorite Button with Animated Icon */}
+            <motion.div
+              whileHover={{ scale: 1.05 }}
+              whileTap={{ scale: 0.95 }}
+            >
+              <Button
+                variant="outline"
+                size="icon"
+                className={`hover:bg-accent hover:text-accent-foreground hover:border-accent transition-all shadow-soft ${isProductFavorite ? 'text-red-500' : ''}`}
+                onClick={handleToggleFavorite}
+              >
+                <motion.div
+                  whileHover={{ scale: 1.2 }}
+                  transition={{ duration: 0.2 }}
+                >
+                  <Heart className={`h-4 w-4 ${isProductFavorite ? 'fill-current' : ''}`} />
                 </motion.div>
               </Button>
             </motion.div>

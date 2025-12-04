@@ -7,7 +7,7 @@ import { Footer } from "@/components/layout/Footer";
 import { Star, ShoppingCart, ArrowLeft, Package, Heart, Share2, Truck, Shield, RotateCcw } from "lucide-react";
 import { motion } from "framer-motion";
 import { toast } from "sonner";
-import { Helmet } from "react-helmet";
+import { Helmet } from "react-helmet-async";
 import { useState } from "react";
 import { useCartStore } from "@/store/cartStore"; // Import useCartStore
 
@@ -136,6 +136,33 @@ const ProductDetails = () => {
         <meta property="og:type" content="product" />
         <meta property="product:price:amount" content={product.price.toString()} />
         <meta property="product:price:currency" content="USD" />
+        <script type="application/ld+json">
+          {`
+            {
+              "@context": "https://schema.org/",
+              "@type": "Product",
+              "name": "${product.title}",
+              "image": "${product.image}",
+              "description": "${product.description}",
+              "brand": {
+                "@type": "Brand",
+                "name": "ShopHub"
+              },
+              "offers": {
+                "@type": "Offer",
+                "url": "${window.location.href}",
+                "priceCurrency": "USD",
+                "price": "${product.price}",
+                "availability": "https://schema.org/InStock"
+              },
+              "aggregateRating": {
+                "@type": "AggregateRating",
+                "ratingValue": "${product.rating.rate}",
+                "reviewCount": "${product.rating.count}"
+              }
+            }
+          `}
+        </script>
       </Helmet>
 
       <Header />
