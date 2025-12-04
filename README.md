@@ -53,7 +53,7 @@ This project is built with:
 
 - Vite
 - TypeScript
-- React
+- Next.js
 - shadcn-ui
 - Tailwind CSS
 
